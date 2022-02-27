@@ -5,7 +5,8 @@ import java.time.ZoneId;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-class CachedStore implements IStorage {
+public class CachedStore implements IStorage {
+
     private int maxSize;
     private final IStorage storage;
     private final Map<String, Long> ttlMapping = new ConcurrentHashMap<>();
@@ -19,11 +20,11 @@ class CachedStore implements IStorage {
     }
 
     @Override
-    public void put(String key, String value, long ttl) {
+    public void put(String key, String value) {
         // I'm using a synchronized block and not a synchronized method because so far this is the only place
         // we need to worry about multiple threads.
         synchronized (storage) {
-            System.out.println(String.format("CachedStorage: Checking size before add key %s. current  size %s max size %s",
+            System.out.println(String.format("CachedStorage: Checking size before add key %s. Current size %s max size %s",
                     key, currentSize, maxSize));
             if (currentSize == maxSize) {
                 // This is being done only here in order to avoid a ttl check all requests once the ttl method
@@ -38,17 +39,13 @@ class CachedStore implements IStorage {
             }
             System.out.println("CachedStorage: adding key " + key + ". For Thread " + Thread.currentThread().getName());
             storage.put(key, value);
-            ttlMapping.put(key, getConfiguredTTL(ttl));
+            ttlMapping.put(key, getConfiguredTTL(cacheTTL));
             currentSize++;
         }
     }
 
     private long getConfiguredTTL(long ttl) {
         return LocalDateTime.now().plusSeconds(ttl).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-    }
-
-    public void put(String key, String value) {
-        put(key, value, cacheTTL);
     }
 
     /**

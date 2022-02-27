@@ -14,11 +14,6 @@ public class RedisStorageImpl implements IStorage {
     }
 
     @Override
-    public void put(String key, String value, long ttl) {
-
-    }
-
-    @Override
     public String get(String key) {
         return storage.get(key);
     }
@@ -27,5 +22,9 @@ public class RedisStorageImpl implements IStorage {
     public void remove(String key) {
         System.out.println("RedisStorage: removing key " + key + ". Current size " + storage.size());
         storage.remove(key);
+    }
+
+    public int getStorageCurrentSize() {
+        return storage.size();
     }
 }
