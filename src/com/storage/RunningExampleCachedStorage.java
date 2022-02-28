@@ -17,7 +17,7 @@ public class RunningExampleCachedStorage {
 
     public static void main(String[] args) throws InterruptedException {
         if (args.length == 0) {
-            throw new IllegalArgumentException("Missing required params");
+            throw new IllegalArgumentException("Missing required params.");
         }
 
         RunningExampleCachedStorage runExample = new RunningExampleCachedStorage();
@@ -51,7 +51,7 @@ public class RunningExampleCachedStorage {
      * @throws InterruptedException
      */
     private void putKeys(final String maxSize, Map<String, String> cacheEntries, final String cacheTTL) {
-        System.out.println(String.format("Starting testing: max size: %s, total cached entries: %s, cache ttl: %s",
+        System.out.println(String.format("Starting testing: max size: %s, total cached entries: %s, cache ttl: %s.",
                 maxSize, cacheEntries.size(), cacheTTL));
 
         CachedStore cachedStore = new CachedStore(storage, Integer.parseInt(maxSize),

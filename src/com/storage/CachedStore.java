@@ -29,7 +29,6 @@ public class CachedStore implements IStorage {
             if (currentSize == maxSize) {
                 // This is being done only here in order to avoid a ttl check all requests once the ttl method
                 // would iterate through all items in the ttl mapping
-                //
                 checkTTL();
                 // Tries again to add the item
                 if (currentSize == maxSize) {
